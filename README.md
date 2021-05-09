@@ -1,6 +1,6 @@
 # MadrsaFreeCourses
 ##  AraBot
-A Arabic voice recognition chatbot using [Annyang Voice recognition Library](https://www.talater.com/annyang/)
+Arabic voice recognition chatbot using [Annyang Voice recognition Library](https://www.talater.com/annyang/) inorder to be used in [Madrasa](https://madrasafree.com/) Arabic speaking courses.
 
 ### Latest update :
 ----
