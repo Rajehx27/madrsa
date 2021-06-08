@@ -1,6 +1,20 @@
 "use strict";
-import * as lib from "./Class1data.js"
-import {toTaatik} from "./taatik.js"
+// import * as lib from "./Class1data.js"
+
+// var xhttp = new XMLHttpRequest();
+// xhttp.onreadystatechange = function() {
+//     if (this.readyState == 4 && this.status == 200) {
+//         const jasonIn =JSON.parse(xhttp.responseText);
+//         return jasonIn;
+//     }
+// };
+
+// xhttp.open("GET", "input.json", false);
+// xhttp.send();
+
+
+var globlajason = xhttp.onreadystatechange(); 
+console.log(globlajason);
 
 const chat = $(".chat");
 const director = $(".director-container");
@@ -8,21 +22,22 @@ var Iter = "step0";
 
 
 function showBotAnswer(replay){
-    chat.append('<div class="msg bot">' + toTaatik(replay) + '</div>');
+    
+    chat.append('<div class="msg bot">' + replay + '</div>');
     director.html("");
 }
 
 function giveOptions(replay){
     director.append(
         '<div class="msg director">אנא הקליטו... <br> אפשרויות: '
-    );
+      );
     for(const option in replay){
         console.log(option);
         director.append('<span>'+option+'<br></span>');
     }
     director.append(
         '</div> '
-    );
+      );
 }
 
 function appendUserAnswer(replay){
@@ -37,7 +52,9 @@ function showBotton(repet){
     document.getElementById("myBtn").addEventListener("click", () => {lib.sayTheWord(repet)});
 }
 
+
 if(annyang){
+
     function handleCommand(XX){
         for(const x in XX){
             annyang.removeCommands(x);
@@ -80,6 +97,11 @@ if(annyang){
         SpeechKITT.abortRecognition();
         showBotAnswer("حاول مرة أخرى <br>"+phrases[0] + " :أسف لم أفهم");
     });
+    
+    // annyang.addCallback('result', function(phrases) {
+    //     console.log("I think the user said: ", phrases[0]);
+    //     console.log("But then again, it could be any of the following: ", phrases);
+    // });
     
     annyang.setLanguage("ar-JO");
     annyang.start({ autoRestart: false, continuous: false , paused : true });
