@@ -10,18 +10,16 @@
       <div class="p-4 w-full">
       <script id="code">
         function init() {
-          if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
-          var $ = go.GraphObject.make;  // for conciseness in defining templates
+          if (window.goSamples) goSamples();
+          var $ = go.GraphObject.make; 
 
           myDiagram =
-            $(go.Diagram, "myDiagramDiv",  // must name or refer to the DIV HTML element
+            $(go.Diagram, "myDiagramDiv", 
               {
-                // "LinkDrawn": showLinkLabel,  // this DiagramEvent listener is defined below
-                // "LinkRelinked": showLinkLabel,
-                // "undoManager.isEnabled": true  // enable undo & redo
+                "LinkDrawn": showLinkLabel,
+                "LinkRelinked": showLinkLabel,
+                "undoManager.isEnabled": true
               });
-
-          // when the document is modified, add a "*" to the title and enable the "Save" button
           myDiagram.addDiagramListener("Modified", function(e) {
             var button = document.getElementById("SaveButton");
             if (button) button.disabled = !myDiagram.isModified;
@@ -33,7 +31,6 @@
             }
           });
 
-          // helper definitions for node templates
 
           function nodeStyle() {
             return [
@@ -44,16 +41,9 @@
             ];
           }
 
-          // Define a function for creating a "port" that is normally transparent.
-          // The "name" is used as the GraphObject.portId,
-          // the "align" is used to determine where to position the port relative to the body of the node,
-          // the "spot" is used to control how links connect with the port and whether the port
-          // stretches along the side of the node,
-          // and the boolean "output" and "input" arguments control whether the user can draw links from or to the port.
+
           function makePort(name, align, spot, output, input) {
             var horizontal = align.equals(go.Spot.Top) || align.equals(go.Spot.Bottom);
-            // the port is basically just a transparent rectangle that stretches along the side of the node,
-            // and becomes colored when the mouse passes over it
             return $(go.Shape,
               {
                 fill: "transparent",  // changed to a color in the mouseEnter event handler
@@ -64,9 +54,9 @@
                 stretch: (horizontal ? go.GraphObject.Horizontal : go.GraphObject.Vertical),
                 portId: name,  // declare this object to be a "port"
                 fromSpot: spot,  // declare where links may connect at this port
-                fromLinkable: output,  // declare whether the user may draw links from here
+                fromLinkable: output,  
                 toSpot: spot,  // declare where links may connect at this port
-                toLinkable: input,  // declare whether the user may draw links to here
+                toLinkable: input, 
                 cursor: "pointer",  // show a different cursor to indicate potential link point
                 mouseEnter: function(e, port) {  // the PORT argument will be this Shape
                   if (!e.diagram.isReadOnly) port.fill = "rgba(255,0,255,0.5)";
@@ -135,16 +125,14 @@
 
           myDiagram.nodeTemplateMap.add("",  // the default category
             $(go.Node, "Table", nodeStyle(),
-              // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
-            // $(go.Panel, "Auto",
             $(go.Shape, "Rectangle",{ fill: "#59595a", stroke: "#09d3ac", strokeWidth: 3.5 },
             new go.Binding("figure", "figure")),
             $(go.Panel, "Auto","Vertical",
               {
                 margin: 3,
                 defaultAlignment: go.Spot.Left,
-                itemCategoryProperty: "type",  // this property controls the template used
-                itemTemplateMap: itemtemplates  // map was defined above
+                itemCategoryProperty: "type", 
+                itemTemplateMap: itemtemplates 
               },
               new go.Binding("itemArray", "info").makeTwoWay()),
               makePort("T", go.Spot.Top, go.Spot.TopSide, false, true),
@@ -155,7 +143,6 @@
 
           myDiagram.nodeTemplateMap.add("Conditional",
             $(go.Node, "Table", nodeStyle(),
-              // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
               $(go.Shape, "Rectangle",
                   { fill: "#59595a", stroke: "#00A9C9" , strokeWidth: 3.5 },
                   new go.Binding("figure", "figure")),
@@ -182,7 +169,6 @@
                 $(go.TextBlock, "Start", textStyle(),new go.Binding("text"))
                 
               ),
-              // three named ports, one on each side except the top, all output only:
               makePort("L", go.Spot.Left, go.Spot.Left, true, false),
               makePort("R", go.Spot.Right, go.Spot.Right, true, false),
               makePort("B", go.Spot.Bottom, go.Spot.Bottom, true, false)
@@ -196,7 +182,6 @@
                 $(go.TextBlock, "End", textStyle(),
                   new go.Binding("text"))
               ),
-              // three named ports, one on each side except the bottom, all input only:
               makePort("T", go.Spot.Top, go.Spot.Top, false, true),
               makePort("L", go.Spot.Left, go.Spot.Left, false, true),
               makePort("R", go.Spot.Right, go.Spot.Right, false, true)
@@ -234,11 +219,9 @@
                   editable: true
                 },
                 new go.Binding("text").makeTwoWay())
-              // no ports, because no links are allowed to connect with a comment
             ));
 
 
-          // replace the default Link template in the linkTemplateMap
           myDiagram.linkTemplate =
             $(go.Link,  // the whole link panel
               {
@@ -278,8 +261,6 @@
               )
             );
 
-          // Make link labels visible if coming out of a "conditional" node.
-          // This listener is called by the "LinkDrawn" and "LinkRelinked" DiagramEvents.
           function showLinkLabel(e) {
             var label = e.subject.findObject("LABEL");
             if (label !== null) label.visible = (e.subject.fromNode.data.category === "Conditional");
@@ -289,13 +270,10 @@
           myDiagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
           myDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
 
-          load();  // load an initial diagram from some JSON text
-
-          // initialize the Palette that is on the left side of the page
+          load(); 
           myPalette =
             $(go.Palette, "myPaletteDiv",  // must name or refer to the DIV HTML element
               {
-                // Instead of the default animation, use a custom fade-down
                 "animationManager.initialAnimationStyle": go.AnimationManager.None,
                 "InitialAnimationStarting": animateFadeDown, // Instead, animate with this function
 
@@ -318,7 +296,6 @@
                 ])
               });
 
-          // This is a re-implementation of the default animation, except it fades in from downwards, instead of upwards.
           function animateFadeDown(e) {
             var diagram = e.diagram;
             var animation = new go.Animation();
