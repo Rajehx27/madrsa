@@ -1,5 +1,6 @@
 "use strict";
-// import * as lib from "./Class1data.js"
+import * as lib from "./Class1data.js"
+// import {toTaatik} from "./taatik" 
 
 // var xhttp = new XMLHttpRequest();
 // xhttp.onreadystatechange = function() {
@@ -13,8 +14,8 @@
 // xhttp.send();
 
 
-var globlajason = xhttp.onreadystatechange(); 
-console.log(globlajason);
+// var globlajason = xhttp.onreadystatechange(); 
+// console.log(globlajason);
 
 const chat = $(".chat");
 const director = $(".director-container");
@@ -23,7 +24,7 @@ var Iter = "step0";
 
 function showBotAnswer(replay){
     
-    chat.append('<div class="msg bot">' + replay + '</div>');
+    chat.append('<div class="msg bot">' + toTaatik(replay) + '</div>');
     director.html("");
 }
 

@@ -76,53 +76,55 @@ function init() {
       }
     }
 
-    // define the Node templates for regular nodes
-    var itemtemplates = new go.Map(); // In TypeScript you could write: new go.Map<string, go.Panel>();
+    function newListAdded(){
+        var itemtemplates = new go.Map(); // In TypeScript you could write: new go.Map<string, go.Panel>();
 
-    itemtemplates.add("text",
-      $(go.Panel,
-        $(go.TextBlock, textStyle(),
-        {
-          margin: 8,
-          maxSize: new go.Size(160, NaN),
-          wrap: go.TextBlock.WrapFit,
-          editable: true
-        },
-        new go.Binding("text"))
-    ));
-    itemtemplates.add("bot",
-      $(go.Panel,
-        $(go.TextBlock, textStyle(),
-        {
-          margin: 8,
-          maxSize: new go.Size(160, NaN),
-          wrap: go.TextBlock.WrapFit,
-          editable: true
-        },
-        new go.Binding("text"))
-    ));
-    itemtemplates.add("user",
-      $(go.Panel,
-        $(go.TextBlock, textStyle(),
-        {
-          margin: 8,
-          maxSize: new go.Size(160, NaN),
-          wrap: go.TextBlock.WrapFit,
-          editable: true
-        },
-        new go.Binding("text"))
-    ));
-    itemtemplates.add("voice",
-      $(go.Panel,
-        $(go.TextBlock, textStyle(),
-        {
-          margin: 8,
-          maxSize: new go.Size(160, NaN),
-          wrap: go.TextBlock.WrapFit,
-          editable: true
-        },
-        new go.Binding("text"))
-    ));
+        // itemtemplates.add("text",
+        //   $(go.Panel,
+        //     $(go.TextBlock, textStyle(),
+        //     {
+        //       margin: 8,
+        //       maxSize: new go.Size(160, NaN),
+        //       wrap: go.TextBlock.WrapFit,
+        //       editable: true
+        //     },
+        //     new go.Binding("text"))
+        // ));
+        // itemtemplates.add("bot",
+        //   $(go.Panel,
+        //     $(go.TextBlock, textStyle(),
+        //     {
+        //       margin: 8,
+        //       maxSize: new go.Size(160, NaN),
+        //       wrap: go.TextBlock.WrapFit,
+        //       editable: true
+        //     },
+        //     new go.Binding("text"))
+        // ));
+        // itemtemplates.add("user",
+        //   $(go.Panel,
+        //     $(go.TextBlock, textStyle(),
+        //     {
+        //       margin: 8,
+        //       maxSize: new go.Size(160, NaN),
+        //       wrap: go.TextBlock.WrapFit,
+        //       editable: true
+        //     },
+        //     new go.Binding("text"))
+        // ));
+        // itemtemplates.add("voice",
+        //   $(go.Panel,
+        //     $(go.TextBlock, textStyle(),
+        //     {
+        //       margin: 8,
+        //       maxSize: new go.Size(160, NaN),
+        //       wrap: go.TextBlock.WrapFit,
+        //       editable: true
+        //     },
+        //     new go.Binding("text"))
+        // ));
+        return itemtemplates;
+      }
 
 
     myDiagram.nodeTemplateMap.add("",  // the default category
@@ -136,9 +138,9 @@ function init() {
           margin: 3,
           defaultAlignment: go.Spot.Left,
           itemCategoryProperty: "type",  // this property controls the template used
-          itemTemplateMap: itemtemplates  // map was defined above
+          itemTemplateMap: new go.Map()  // map was defined above
         },
-        new go.Binding("itemArray", "info").makeTwoWay()),
+        new go.Binding().makeTwoWay()),
         makePort("T", go.Spot.Top, go.Spot.TopSide, false, true),
         makePort("L", go.Spot.Left, go.Spot.LeftSide, true, true),
         makePort("R", go.Spot.Right, go.Spot.RightSide, true, true),
@@ -156,9 +158,9 @@ function init() {
             margin: 3,
             defaultAlignment: go.Spot.Left,
             itemCategoryProperty: "type",  // this property controls the template used
-            itemTemplateMap: itemtemplates  // map was defined above
+            itemTemplateMap: new go.Map()  // map was defined above
           },
-        new go.Binding("itemArray", "info").makeTwoWay()),
+        new go.Binding().makeTwoWay()),
         // four named ports, one on each side:
         makePort("T", go.Spot.Top, go.Spot.Top, false, true),
         makePort("L", go.Spot.Left, go.Spot.Left, true, true),
@@ -294,11 +296,11 @@ function init() {
           nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
           model: new go.GraphLinksModel([  // specify the contents of the Palette
             { category: "Start", text: "Start" },
-            {category: "Conditional", info: [
-              { type: "bot", text: "Bot:" },
-              { type: "voice", text: "recoding:" }
+            {category: "Conditional", 
+              type: "bot", text: "Bot:" ,
+              type: "voice", text: "recoding:" 
               // { type: "button", text: "Second Button", handler: "alert" }
-            ]},
+            },
             { category: "answer",info: [
               // { type: "button", text: "First Button", handler: "alert"},
               { type: "user", text: "User Says" },
@@ -327,29 +329,29 @@ function init() {
 
 
   /* **************************************************************** */
-  var jasonIn;
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-          jasonIn =(xhttp.responseText);
-      }
-  };
-  xhttp.open("GET", "input.json", false);
-  xhttp.send();
+//   var jasonIn;
+//   var xhttp = new XMLHttpRequest();
+//   xhttp.onreadystatechange = function() {
+//       if (this.readyState == 4 && this.status == 200) {
+//           jasonIn =(xhttp.responseText);
+//       }
+//   };
+//   xhttp.open("GET", "input.json", false);
+//   xhttp.send();
 
-/****************************************************************/
-const sendData = () => {
-  sendHttpRequest('POST', 'input.json', {
-    email: 'eve.holt@reqres.in'
-    // password: 'pistol'
-  })
-    .then(responseData => {
-      console.log(responseData);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-};
+// /****************************************************************/
+// const sendData = () => {
+//   sendHttpRequest('POST', 'input.json', {
+//     email: 'eve.holt@reqres.in'
+//     // password: 'pistol'
+//   })
+//     .then(responseData => {
+//       console.log(responseData);
+//     })
+//     .catch(err => {
+//       console.log(err);
+//     });
+// };
 
 /***************************************************************************************************************/
   // Show the diagram's model in JSON format that the user may edit
